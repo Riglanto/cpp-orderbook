@@ -270,43 +270,48 @@ int main(int, char **)
     // Read
     vector<Tick> ticks = readTicks();
 
-    using picoseconds = chrono::duration<long long, std::pico>;
-    auto t0 = chrono::steady_clock::now();
-
     // Calculate
     OrderBook book;
 
-    for (auto &&tick : ticks)
+    const int N = 10;
+    for (int n = 0; n < N; n++)
     {
 
-        bool isBid = tick.side == '1';
-        auto orders = &(isBid ? book.bidOrders : book.askOrders);
-        auto best = &(isBid ? book.bestBid : book.bestAsk);
+        using picoseconds = chrono::duration<long long, std::pico>;
+        auto t0 = chrono::steady_clock::now();
 
-        switch (tick.action)
+        for (auto &&tick : ticks)
         {
-        case 'Y':
-        case 'F':
-            book.clear();
-            break;
-        case 'A':
-            book.add(&tick, orders, best);
-            break;
-        case 'M':
-            book.update(&tick, orders, best);
-            break;
-        case 'D':
-            book.remove(&tick, orders, best);
-            break;
+
+            bool isBid = tick.side == '1';
+            auto orders = &(isBid ? book.bidOrders : book.askOrders);
+            auto best = &(isBid ? book.bestBid : book.bestAsk);
+
+            switch (tick.action)
+            {
+            case 'Y':
+            case 'F':
+                book.clear();
+                break;
+            case 'A':
+                book.add(&tick, orders, best);
+                break;
+            case 'M':
+                book.update(&tick, orders, best);
+                break;
+            case 'D':
+                book.remove(&tick, orders, best);
+                break;
+            }
+
+            book.updateResult(tick);
         }
 
-        book.updateResult(tick);
+        auto t1 = std::chrono::steady_clock::now();
+        auto d = picoseconds{t1 - t0} / 1e6; // pico to micro
+        cout << fixed << d.count() << " microseconds" << endl;
+        cout << fixed << d.count() / ticks.size() << " microseconds per tick" << endl;
     }
-
-    auto t1 = std::chrono::steady_clock::now();
-    auto d = picoseconds{t1 - t0} / 1e6; // pico to micro
-    cout << d.count() << " microseconds" << endl;
-    cout << d.count() / ticks.size() << " microseconds per tick" << endl;
 
     // Print info
     cout

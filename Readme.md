@@ -28,8 +28,8 @@ Debug:
 Release:
 
 ```
-20357 microseconds
-0.126891 microseconds per tick
+13965.938000 microseconds
+0.087054 microseconds per tick
 ```
 
 # Todo
