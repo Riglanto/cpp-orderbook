@@ -3,7 +3,8 @@
 CMake tool for VScode
 
 Via command line:
-`cmake -B build && cd build/ && cmake --build . && ./sq && cd -`
+
+`cmake -DCMAKE_BUILD_TYPE=Release -B build && cd build/ && cmake --build . && ./sq && cd -`
 
 No external libs needed.
 
@@ -27,8 +28,8 @@ Debug:
 Release:
 
 ```
-21655.8 microseconds
-0.134987 microseconds per tick
+20357 microseconds
+0.126891 microseconds per tick
 ```
 
 # Todo
