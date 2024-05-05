@@ -3,7 +3,7 @@
 CMake tool for VScode
 
 Via command line:
-`cd build/ && cmake --build . && ./sq && cd -`
+`cmake -B build && cd build/ && cmake --build . && ./sq && cd -`
 
 No external libs needed.
 
