@@ -158,6 +158,8 @@ public:
             return;
         }
 
+        int32_t oldQty = orders->at(tick->price).at(tick->orderId).qty;
+
         orders->at(tick->price).erase(tick->orderId);
         if (orders->at(tick->price).empty())
         {
@@ -170,7 +172,7 @@ public:
         if (tick->price == best->value().price)
         {
 
-            best->value().qty -= tick->qty;
+            best->value().qty -= oldQty;
             best->value().ordersCount--;
         }
     }
@@ -273,6 +275,7 @@ int main(int, char **)
 
     // Calculate
     OrderBook book;
+
     for (auto &&tick : ticks)
     {
 
